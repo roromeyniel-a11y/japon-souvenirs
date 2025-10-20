@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Salle Commune</title>
+  <title id="page-title">Salle Commune</title>
 
   <style>
     /* ===== PAGE DES LIEUX ===== */
-    .lieu-page {
+    body.lieu-page {
       margin: 0;
       padding: 0;
       height: 100vh;
@@ -49,7 +49,25 @@
       background: rgba(255, 255, 255, 0.9);
     }
 
-    .lieu-page .scene {
+    /* Bouton afficher/masquer galerie */
+    .toggle-gallery {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 15px;
+      background-color: rgba(255,255,255,0.7);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+      font-weight: bold;
+    }
+    .toggle-gallery:hover {
+      background-color: rgba(255,255,255,0.9);
+    }
+
+    /* Scène avec background */
+    .scene {
       width: 100%;
       height: 100%;
       display: flex;
@@ -59,11 +77,6 @@
       background-position: center;
       background-repeat: no-repeat;
       position: relative;
-    }
-
-    /* Salle commune spécifique */
-    .scene.salle-commune {
-      background-image: url("../../assets/images/lieux/residence/salle%20commune.JPG");
     }
 
     /* Galerie centrée */
@@ -98,7 +111,6 @@
       border-radius: 10px;
       transition: 0.3s;
     }
-
     .gallery button:hover {
       background: rgba(255,255,255,1);
     }
@@ -108,12 +120,17 @@
 <body class="lieu-page">
   <!-- Bouton retour -->
   <a href="residence.html" class="back-button">← Retour</a>
-  <h1>Salle Commune</h1>
 
-  <!-- Scène avec background -->
-  <div class="scene salle-commune">
+  <!-- Bouton afficher/masquer galerie -->
+  <button id="toggle-gallery" class="toggle-gallery">Masquer / Afficher Galerie</button>
+
+  <!-- Titre -->
+  <h1 id="titre-lieu">Salle Commune</h1>
+
+  <!-- Scène -->
+  <div class="scene" id="scene">
     <!-- Galerie photo -->
-    <div class="gallery">
+    <div class="gallery" id="gallery">
       <button class="prev" onclick="prevImage()">◀</button>
       <img id="gallery-image" src="" alt="Photo salle commune">
       <button class="next" onclick="nextImage()">▶</button>
@@ -121,31 +138,52 @@
   </div>
 
   <script>
-    const totalImages = 5; // à ajuster selon le nombre réel de photos
+    // ----- CONFIGURATION DU LIEU -----
+    const lieu = {
+      nom: "Salle Commune", 
+      background: "../../assets/images/lieux/residence/salle commune.JPG", 
+      dossierImages: "../../assets/images/lieux/salle_commune/", 
+      totalImages: 5 // à ajuster selon le nombre réel de photos
+    };
+
+    // Appliquer le titre et le fond
+    document.getElementById("titre-lieu").textContent = lieu.nom;
+    document.getElementById("page-title").textContent = lieu.nom;
+    document.getElementById("scene").style.backgroundImage = `url('${lieu.background}')`;
+
     let currentIndex = 0;
 
     function updateImage() {
-      document.getElementById('gallery-image').src = 
-        `../../assets/images/lieux/salle_commune/image ${currentIndex + 1}.jpeg`;
+      document.getElementById('gallery-image').src = `${lieu.dossierImages}image ${currentIndex + 1}.jpeg`;
     }
 
     function nextImage() {
-      currentIndex = (currentIndex + 1) % totalImages;
+      currentIndex = (currentIndex + 1) % lieu.totalImages;
       updateImage();
     }
 
     function prevImage() {
-      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+      currentIndex = (currentIndex - 1 + lieu.totalImages) % lieu.totalImages;
       updateImage();
     }
 
-    // Initialisation
     window.onload = updateImage;
 
     // Navigation clavier
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') nextImage();
       if (e.key === 'ArrowLeft') prevImage();
+    });
+
+    // Afficher / Masquer la galerie
+    const toggleBtn = document.getElementById('toggle-gallery');
+    const galleryDiv = document.getElementById('gallery');
+    toggleBtn.addEventListener('click', () => {
+      if (galleryDiv.style.display === 'none') {
+        galleryDiv.style.display = 'flex';
+      } else {
+        galleryDiv.style.display = 'none';
+      }
     });
   </script>
 </body>
