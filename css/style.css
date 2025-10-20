@@ -1,0 +1,264 @@
+/* ----------------------------
+   Styles page d'accueil
+---------------------------- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-image: url('../assets/images/fond.jpg'); /* fond général */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Conteneur SVG */
+#japan-map-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* SVG plein écran mais contenu centré */
+#japan-map {
+  width: 80%;
+  height: auto;
+  transform-origin: center center; /* zoom autour du centre */
+  transition: transform 0.2s ease;
+}
+
+/* Survol préfecture */
+#japan-map path {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#japan-map path:hover {
+  transform: scale(1.05);
+}
+
+/* Bouton Mii en haut à droite */
+.mii-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
+
+.mii-button img {
+  width: 100px;
+  border-radius: 50%;
+  border: none; /* plus de cadre */
+  box-shadow: none;
+  transition: transform 0.3s;
+}
+
+.mii-button:hover img {
+  transform: scale(1.1);
+}
+
+/* Titre ou légende si nécessaire */
+.map-title {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 2em;
+  color: white;
+  z-index: 10;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Zoom avec la molette */
+
+
+/* ---------- PAGE PERSONNAGES ---------- */
+.personnages-page {
+  background: linear-gradient(to top, #89cff0 70%, #b0e0e6 100%);
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Bouton retour */
+.retour {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: white;
+  background-color: rgba(0,0,0,0.3);
+  padding: 8px 15px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+.retour:hover {
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Sol */
+.sol {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(to top, #228B22, #32CD32);
+  border-top: 2px solid #1e7b1e;
+}
+
+/* Conteneur personnages */
+.personnages-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+  padding-bottom: 150px;
+}
+
+/* Chaque personnage */
+.perso {
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+}
+
+.mii {
+  width: 130px;
+  animation: bounce 2s ease-in-out infinite;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+/* Nom du personnage */
+.perso p {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: white;
+}
+
+/* Animation de saut */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+}
+
+/* Galerie plein écran */
+.gallery-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.gallery-overlay img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 10px;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.nav {
+  margin-top: 20px;
+}
+
+.nav button {
+  background: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.5em;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav button:hover {
+  background: #ddd;
+}
+
+
+/* === SLIDER === */
+.slider {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.slider img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.slider img.active {
+  opacity: 1;
+}
+
+/* === BOUTON RETOUR === */
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border: none;
+  outline: none;
+}
+
+.back-button img {
+  width: 100%;
+  height: auto;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  transition: transform 0.2s ease;
+}
+
+.back-button img:hover {
+  transform: scale(1.1);
+}
+
+
+

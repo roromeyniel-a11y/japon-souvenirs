@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nagano - Souvenirs Japon</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    /* --- Carte responsive --- */
+    #nagano-map {
+      width: 90%;          /* s’adapte aux écrans */
+      max-width: 420px;    /* limite la taille max */
+      height: auto;        /* garde les proportions */
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border: none;
+      box-shadow: none;
+      display: block;
+      margin: 0 auto;      /* centre la carte */
+    }
+
+    #nagano-map:hover {
+      transform: scale(1.03);
+    }
+
+    /* === BOUTON RETOUR IMAGE EN HAUT À GAUCHE === */
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      display: block;
+      width: 50px;
+      height: 50px;
+      border: none;
+      outline: none;
+    }
+
+    .back-button img {
+      width: 100%;
+      height: auto;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      transition: transform 0.2s ease;
+    }
+
+    .back-button img:hover {
+      transform: scale(1.1);
+    }
+
+    /* === OVERLAY SLIDER === */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.8);
+      display: none; /* caché au départ */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* === SLIDER === */
+    .slider {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      height: 70%;
+      overflow: hidden;
+      border-radius: 15px;
+      background-color: #fff;
+    }
+
+    .slides {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slides img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+
+    .slides img.active {
+      opacity: 1;
+    }
+
+    /* === BOUTONS PRÉC / SUIV === */
+    .prev, .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.75);
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 1.8rem;
+      border-radius: 8px;
+      z-index: 1002;
+    }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    .prev:hover, .next:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* === BOUTON FERMER === */
+    .close-slider {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background-color: rgba(255,255,255,0.9);
+      border: none;
+      font-size: 1.8rem;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      line-height: 38px;
+      z-index: 1002;
+    }
+
+    .close-slider:hover {
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Souvenirs de la Préfecture de Nagano</h1>
+
+    <!-- Carte SVG -->
+    <img id="nagano-map" src="../assets/svg/nagano.svg" alt="Carte de Nagano">
+
+    <!-- Bouton retour -->
+    <a href="../index.html" class="back-button">
+      <img src="../assets/images/icons/back.png" alt="Retour" />
+    </a>
+  </div>
+
+  <!-- Overlay avec slider -->
+  <div class="overlay" id="overlay">
+    <div class="slider" id="nagano-slider">
+      <button class="close-slider" id="close-slider">&times;</button>
+      <div class="slides">
+        <img src="../assets/images/nagano/nagano%201.jpeg" alt="Paysage de Nagano" class="active">
+        <img src="../assets/images/nagano/nagano%202.jpeg" alt="Montagnes de Nagano">
+        <img src="../assets/images/nagano/nagano%203.jpeg" alt="Village de neige à Nagano">
+        <img src="../assets/images/nagano/nagano%204.jpeg" alt="Temple Zenko-ji">
+        <img src="../assets/images/nagano/nagano%205.jpeg" alt="Lac Suwa">
+      </div>
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+    </div>
+  </div>
+
+  <script>
+    const map = document.getElementById('nagano-map');
+    const overlay = document.getElementById('overlay');
+    const slides = document.querySelectorAll('#nagano-slider .slides img');
+    const prevBtn = document.querySelector('#nagano-slider .prev');
+    const nextBtn = document.querySelector('#nagano-slider .next');
+    const closeBtn = document.getElementById('close-slider');
+    let index = 0;
+
+    function showSlide(i) {
+      slides.forEach((img, idx) => {
+        img.classList.remove('active');
+        if (idx === i) img.classList.add('active');
+      });
+    }
+
+    // ouvrir slider
+    map.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+      index = 0;
+      showSlide(index);
+    });
+
+    // fermer slider
+    closeBtn.addEventListener('click', () => overlay.style.display = 'none');
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.style.display = 'none';
+    });
+
+    // navigation boutons
+    prevBtn.addEventListener('click', () => {
+      index = (index - 1 + slides.length) % slides.length;
+      showSlide(index);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    });
+
+    // navigation clavier
+    document.addEventListener('keydown', (e) => {
+      if (overlay.style.display === 'flex') {
+        if (e.key === 'ArrowLeft') {
+          index = (index - 1 + slides.length) % slides.length;
+          showSlide(index);
+        }
+        if (e.key === 'ArrowRight') {
+          index = (index + 1) % slides.length;
+          showSlide(index);
+        }
+        if (e.key === 'Escape') overlay.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

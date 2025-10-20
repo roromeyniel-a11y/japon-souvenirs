@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Personnages</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="personnages-page">
+
+  <!-- Bouton retour -->
+  <a href="index.html" class="retour">← Accueil</a>
+
+  <!-- Sol -->
+  <div class="sol"></div>
+
+  <!-- Conteneur personnages -->
+  <div class="personnages-container">
+
+    <!-- ROBINSON -->
+    <div class="perso" onclick="openGallery('robinson', 22)">
+      <img src="assets/images/mii.png" alt="Mon Mii" class="mii">
+      <p>Robinson</p>
+    </div>
+
+    <!-- OUN -->
+    <div class="perso" onclick="openGallery('oun', 5)">
+      <img src="assets/images/mii oun.png" alt="Mii de Oun" class="mii">
+      <p>Oun</p>
+    </div>
+
+    <!-- Exemple: un autre personnage -->
+    <!--
+    <div class="perso" onclick="openGallery('nom_personnage', nb_images)">
+      <img src="assets/images/mii nom_personnage.png" alt="Mii de Nom" class="mii">
+      <p>Nom</p>
+    </div>
+    -->
+
+  </div>
+
+  <!-- Galerie overlay -->
+  <div id="gallery-overlay" class="gallery-overlay">
+    <span class="close" onclick="closeGallery()">&times;</span>
+    <img id="gallery-image" src="" alt="Photo">
+    <div class="nav">
+      <button onclick="prevImage()">◀</button>
+      <button onclick="nextImage()">▶</button>
+    </div>
+  </div>
+
+  <script>
+    let currentCharacter = '';
+    let totalImages = 0;
+    let currentIndex = 0;
+
+    function openGallery(character, count) {
+      currentCharacter = character;
+      totalImages = count;
+      currentIndex = 0;
+      updateImage();
+      document.getElementById('gallery-overlay').style.display = 'flex';
+    }
+
+    function closeGallery() {
+      document.getElementById('gallery-overlay').style.display = 'none';
+    }
+
+    function updateImage() {
+      const imagePath = `assets/images/personnages/${currentCharacter}/image ${currentIndex + 1}.jpeg`;
+      document.getElementById('gallery-image').src = imagePath;
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % totalImages;
+      updateImage();
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+      updateImage();
+    }
+
+    // Navigation avec les flèches du clavier et fermeture avec ESC
+    document.addEventListener('keydown', function(event) {
+      if (document.getElementById('gallery-overlay').style.display === 'flex') {
+        if (event.key === 'ArrowRight') {
+          nextImage();
+        } else if (event.key === 'ArrowLeft') {
+          prevImage();
+        } else if (event.key === 'Escape') {
+          closeGallery();
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

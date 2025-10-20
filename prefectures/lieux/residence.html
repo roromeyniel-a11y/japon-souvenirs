@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résidence</title>
+  <style>
+    /* ===== PAGE RÉSIDENCE ===== */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #000;
+    }
+
+    /* Bouton retour */
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 10px 18px;
+      border-radius: 8px;
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+      z-index: 10;
+    }
+
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Titre principal */
+    h1 {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 2rem;
+      text-shadow: 0 0 8px rgba(0,0,0,0.5);
+      z-index: 10;
+      margin: 0;
+    }
+
+    /* Scène */
+    .scene {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('assets/images/lieux/residence/residence.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    /* Image pour zones cliquables */
+    .scene img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <a href="../tokyo.html" class="back-button">← Tokyo</a>
+  <h1>Résidence</h1>
+
+  <div class="scene">
+    <img src="../../assets/images/lieux/residence/residence.jpg" alt="Résidence" usemap="#residence-map">
+    <map name="residence-map">
+      <!-- Zone vers salle commune -->
+      <area shape="poly" coords="306,493,306,77,356,117,357,437" href="salle_commune.html" alt="Salle commune">
+      <!-- Autres zones -->
+      <area shape="poly" coords="647,400,642,116,728,21,730,516" href="cafeteria.html" alt="Cafétéria">
+      <area shape="poly" coords="x1,y1,x2,y2,x3,y3,..." href="cuisine.html" alt="Cuisine">
+      <area shape="poly" coords="467,333,469,167,556,165,556,334" href="etage.html" alt="Étage">
+    </map>
+  </div>
+
+  <script>
+    // Rendre la map responsive
+    document.addEventListener("DOMContentLoaded", function() {
+      const img = document.querySelector('.scene img');
+      const map = document.querySelector('map[name="residence-map"]');
+      const areas = map.querySelectorAll('area');
+      
+      areas.forEach(area => {
+        area.dataset.originalCoords = area.coords;
+      });
+
+      function resizeMap() {
+        if (!img.naturalWidth) return;
+        const scale = img.clientWidth / img.naturalWidth;
+        areas.forEach(area => {
+          const originalCoords = area.dataset.originalCoords.split(',').map(Number);
+          const scaledCoords = originalCoords.map(c => c * scale);
+          area.coords = scaledCoords.join(',');
+        });
+      }
+
+      window.addEventListener('resize', resizeMap);
+      img.addEventListener('load', resizeMap);
+      if (img.complete) resizeMap();
+    });
+  </script>
+</body>
+</html>
